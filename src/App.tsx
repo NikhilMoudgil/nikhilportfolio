@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mail, ExternalLink, Code2, Database, Users, 
-  GraduationCap, Trophy, Terminal, Server, Cpu, X, ArrowUpRight, Globe, GitBranch
+  GraduationCap, Terminal, Server, X, ArrowUpRight, Globe, GitBranch, Briefcase
 } from 'lucide-react';
 
 // --- Types ---
@@ -20,26 +20,26 @@ interface Project {
 const projectsData: Project[] = [
   {
     title: "EduNexus",
-    subtitle: "Dynamic API Infrastructure",
-    description: "Engineered an API-based platform for users to generate dynamic learning roadmaps with community interaction features.",
-    longDescription: "EduNexus is a full-stack educational ecosystem built to solve static learning pathways. By leveraging dynamic API routing, users input their field of interest to instantly generate personalized, structured learning roadmaps. It also features a real-time community module allowing peers to collaborate and share insights.",
-    techStack: ["Next.js", "React", "TypeScript", "Prisma", "Supabase", "Tailwind CSS"],
+    subtitle: "API-Based Roadmap Generating Platform",
+    description: "An API-based platform where users generate dynamic roadmaps based on their field of interest, complete with an interactive community.",
+    longDescription: "EduNexus solves static learning curves by allowing users to input personalized data fields to instantly fetch dynamic curriculum roadmaps. Built with robust API routing and an integrated peer community module for technical discussions.",
+    techStack: ["Next.js", "React", "TypeScript", "REST APIs", "Tailwind CSS"],
     icon: <Code2 size={24} />,
     link: "https://edu-nexus-teal.vercel.app"
   },
   {
     title: "Venture-Bridge",
-    subtitle: "Dual-User State Management",
-    description: "Developed a specialized platform facilitating secure interactions and pitch presentations between entrepreneurs and investors.",
-    longDescription: "Venture-Bridge bridges the capital gap by providing a targeted marketplace interface. Entrepreneurs can securely pitch and showcase breakthrough inventions, while verified investors can filter ideas, review metrics, and initiate direct communication pipelines.",
+    subtitle: "Entrepreneur & Investor Ecosystem",
+    description: "A specialized platform for entrepreneurs to pitch ideas and investors to discover inventions and interact seamlessly.",
+    longDescription: "Venture-Bridge bridges the capital and execution gap. It establishes a secure ecosystem where startup founders pitch concepts, and venture capital stakeholders inspect, filter, and engage directly with new technological inventions.",
     techStack: ["MERN Stack", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
     icon: <Users size={24} />
   },
   {
     title: "Airisto",
-    subtitle: "DBMS Marketplace Architecture",
-    description: "Architected a full-scale administration and marketplace system for AC services, heavily relying on strict DBMS logic.",
-    longDescription: "Airisto addresses service management challenges through a structured administrative portal and marketplace architecture. Built using foundational HTML, CSS, and JavaScript, it manages complex relational database operations for service booking tracking, user roles, and marketplace inventory.",
+    subtitle: "DBMS-Based AC Services Marketplace",
+    description: "An administrative marketplace built using HTML, CSS, and JavaScript, powered by backend DBMS logic for service management.",
+    longDescription: "Airisto streamlines air-conditioning service operations. It features administrative control portals and a consumer marketplace heavily managed via structured relational database management systems (DBMS) to process service transactions.",
     techStack: ["HTML5", "CSS3", "JavaScript", "DBMS", "SQL"],
     icon: <Database size={24} />
   }
@@ -54,10 +54,10 @@ export default function App() {
   };
 
   return (
-    <main className="min-h-screen bg-[#07090e] text-gray-100 font-sans selection:bg-teal-500 selection:text-white pb-24 relative overflow-hidden">
+    <main className="min-h-screen bg-[#07090e] text-gray-100 font-mono selection:bg-teal-500 selection:text-gray-950 pb-24 relative overflow-hidden">
       
       {/* Background Ambience Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-teal-500/10 blur-[160px] pointer-events-none rounded-full" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-teal-500/10 blur-[160px] pointer-events-none rounded-full" />
 
       {/* 1. Hero Section */}
       <section className="max-w-6xl mx-auto px-6 pt-28 pb-16 flex flex-col-reverse md:flex-row items-center justify-between gap-12 relative z-10">
@@ -68,8 +68,8 @@ export default function App() {
           className="flex-1 text-center md:text-left space-y-6"
         >
           <motion.div variants={fadeUpVariant}>
-            <span className="px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs font-mono tracking-wide">
-              Available for Opportunities
+            <span className="px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs tracking-wider uppercase">
+              // System Online: Open for Roles
             </span>
           </motion.div>
 
@@ -77,22 +77,22 @@ export default function App() {
             Nikhil Moudgil
           </motion.h1>
 
-          <motion.h2 variants={fadeUpVariant} className="text-xl sm:text-2xl text-teal-400 font-medium">
+          <motion.h2 variants={fadeUpVariant} className="text-xl sm:text-2xl text-teal-400 font-bold">
             Full-Stack Software Engineer
           </motion.h2>
 
-          <motion.p variants={fadeUpVariant} className="text-gray-400 text-base sm:text-lg max-w-xl leading-relaxed mx-auto md:mx-0">
-            Building high-performance applications and scalable architectures. Focused on the intersection of MERN stack development, cloud computing, and efficient system design.
+          <motion.p variants={fadeUpVariant} className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mx-auto md:mx-0">
+            Computer Science undergraduate specializing in high-performance applications, MERN stack development, systems programming in C++/Python, and database architecture.
           </motion.p>
           
           <motion.div variants={fadeUpVariant} className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
-            <a href="mailto:nikhilmoudgil799@gmail.com" className="bg-teal-500 hover:bg-teal-400 text-gray-950 font-semibold px-5 py-2.5 rounded-lg transition-all duration-300 shadow-lg shadow-teal-500/20 flex items-center gap-2 text-sm">
-              <Mail size={16} /> Contact Me
+            <a href="mailto:nikhilmoudgil799@gmail.com" className="bg-teal-500 hover:bg-teal-400 text-gray-950 font-bold px-5 py-2.5 rounded-lg transition-all duration-300 shadow-lg shadow-teal-500/20 flex items-center gap-2 text-sm">
+              <Mail size={16} /> nikhilmoudgil799@gmail.com
             </a>
-            <a href="https://github.com/NikhilMoudgil" target="_blank" rel="noreferrer" className="border border-gray-800 bg-gray-900/60 hover:border-teal-500/50 hover:bg-gray-800 px-5 py-2.5 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm text-gray-300">
+            <a href="https://github.com/NikhilMoudgil" target="_blank" rel="noreferrer" className="border border-gray-800 bg-gray-900/60 hover:border-teal-500/50 hover:bg-gray-800 px-4 py-2.5 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm text-gray-300">
               <GitBranch size={16} /> GitHub
             </a>
-            <a href="https://www.linkedin.com/in/nikhil-moudgil-995408270" target="_blank" rel="noreferrer" className="border border-gray-800 bg-gray-900/60 hover:border-teal-500/50 hover:bg-gray-800 px-5 py-2.5 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm text-gray-300">
+            <a href="https://www.linkedin.com/in/nikhil-moudgil-995408270" target="_blank" rel="noreferrer" className="border border-gray-800 bg-gray-900/60 hover:border-teal-500/50 hover:bg-gray-800 px-4 py-2.5 rounded-lg transition-all duration-300 flex items-center gap-2 text-sm text-gray-300">
               <Globe size={16} /> LinkedIn
             </a>
           </motion.div>
@@ -116,71 +116,75 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* 2. Background, Skills & Achievements Section */}
+      {/* 2. Detailed Background, Skills & Training Section */}
       <section className="max-w-6xl mx-auto px-6 py-16 border-t border-gray-900 relative z-10">
         <motion.h3 
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-          className="text-2xl sm:text-3xl font-bold mb-10 tracking-tight text-white"
+          className="text-2xl sm:text-3xl font-bold mb-10 tracking-tight text-white flex items-center gap-3"
         >
-          Background & Capabilities
+          <Terminal className="text-teal-400" size={28} /> Background & Capabilities
         </motion.h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          {/* Qualifications */}
+          {/* Education & Certifications */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-gray-900/40 p-6 rounded-2xl border border-gray-800/80 backdrop-blur-sm space-y-5">
             <div className="flex items-center gap-3 text-teal-400 mb-2">
               <GraduationCap size={22} />
-              <h4 className="text-lg font-semibold text-gray-100">Education</h4>
+              <h4 className="text-lg font-bold text-gray-100">Education</h4>
             </div>
             <div className="border-l-2 border-teal-500/40 pl-4 space-y-1">
-              <h5 className="font-medium text-gray-200 text-sm">B.Tech CSE</h5>
-              <p className="text-xs text-gray-400">IKGPTU Mohali Campus - 1 (2027)</p>
+              <h5 className="font-bold text-gray-200 text-sm">B.Tech CSE | IKGPTU Mohali Campus - 1</h5>
+              <p className="text-xs text-gray-400">Pursuing (CGPA: 7.55) • Expected 2027</p>
             </div>
             <div className="border-l-2 border-gray-800 pl-4 space-y-1">
-              <h5 className="font-medium text-gray-200 text-sm">Diploma in Computer Engineering</h5>
-              <p className="text-xs text-gray-400">Govt Polytechnic Hamirpur (2024)</p>
+              <h5 className="font-bold text-gray-200 text-sm">Diploma in Computer Engineering</h5>
+              <p className="text-xs text-gray-400">Govt Polytechnic Hamirpur • 75% (2024)</p>
+            </div>
+            <div className="border-l-2 border-gray-800 pl-4 space-y-1">
+              <h5 className="font-bold text-gray-200 text-sm">Diploma in Computer Application</h5>
+              <p className="text-xs text-gray-400">Hartron Skill Center Chandigarh (2020-2021)</p>
             </div>
           </motion.div>
 
-          {/* Technical Arsenal */}
+          {/* Technical Arsenal & Core Subjects */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="bg-gray-900/40 p-6 rounded-2xl border border-gray-800/80 backdrop-blur-sm space-y-4">
             <div className="flex items-center gap-3 text-teal-400 mb-2">
-              <Terminal size={22} />
-              <h4 className="text-lg font-semibold text-gray-100">Technical Arsenal</h4>
+              <Server size={22} />
+              <h4 className="text-lg font-bold text-gray-100">Technical Arsenal</h4>
             </div>
             <div>
-              <p className="text-[11px] font-mono text-teal-400 uppercase tracking-wider mb-1 flex items-center gap-1.5"><Code2 size={12}/> Languages</p>
-              <p className="text-gray-300 text-xs">C++, Python, JavaScript, SQL</p>
+              <p className="text-xs font-bold text-teal-400 uppercase tracking-wider mb-1">Languages & Frameworks</p>
+              <p className="text-gray-300 text-xs">C++, Python, JavaScript, MERN Stack</p>
             </div>
             <div>
-              <p className="text-[11px] font-mono text-teal-400 uppercase tracking-wider mb-1 flex items-center gap-1.5"><Server size={12}/> Systems</p>
-              <p className="text-gray-300 text-xs">MERN Stack, Docker, Microservices</p>
+              <p className="text-xs font-bold text-teal-400 uppercase tracking-wider mb-1">Development & Tools</p>
+              <p className="text-gray-300 text-xs">Git, Docker, Microservices Architecture, REST APIs, SQL</p>
             </div>
             <div>
-              <p className="text-[11px] font-mono text-teal-400 uppercase tracking-wider mb-1 flex items-center gap-1.5"><Cpu size={12}/> Core CS</p>
-              <p className="text-gray-300 text-xs">OS, Networks, DBMS, Cloud Computing</p>
+              <p className="text-xs font-bold text-teal-400 uppercase tracking-wider mb-1">Core CS Subjects</p>
+              <p className="text-gray-300 text-xs">Computer Networks, Operating Systems, DBMS</p>
             </div>
           </motion.div>
 
-          {/* Achievements & Training */}
+          {/* Industrial Training & Milestones */}
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="bg-gray-900/40 p-6 rounded-2xl border border-gray-800/80 backdrop-blur-sm space-y-4">
             <div className="flex items-center gap-3 text-teal-400 mb-2">
-              <Trophy size={22} />
-              <h4 className="text-lg font-semibold text-gray-100">Milestones</h4>
+              <Briefcase size={22} />
+              <h4 className="text-lg font-bold text-gray-100">Training & Milestones</h4>
             </div>
-            <ul className="space-y-2.5 text-xs text-gray-300">
-              <li className="flex items-start gap-2">
-                <span className="text-teal-400 mt-0.5">▹</span>
-                HACK-O-OCTO Hackathon at Chandigarh University.
+            <ul className="space-y-3 text-xs text-gray-300">
+              <li className="border-l-2 border-teal-500/40 pl-3">
+                <span className="font-bold text-gray-200">Web Development Training</span><br/>
+                6 Weeks Industrial Training at Ex-Trainer Mohali.
               </li>
-              <li className="flex items-start gap-2">
-                <span className="text-teal-400 mt-0.5">▹</span>
-                Hack-2 Hatch Hackathon at PEC Chandigarh.
+              <li className="border-l-2 border-gray-800 pl-3">
+                <span className="font-bold text-gray-200">App Development Training</span><br/>
+                6 Weeks Industrial Training at Prerna-Gati Technologies.
               </li>
-              <li className="flex items-start gap-2">
-                <span className="text-teal-400 mt-0.5">▹</span>
-                6-week Industrial Training in Web & App Development.
+              <li className="border-l-2 border-gray-800 pl-3">
+                <span className="font-bold text-gray-200">Hackathons & Workshops</span><br/>
+                HACK-O-OCTO (Chandigarh University), Hack-2 Hatch (PEC Chandigarh), VLSI Design Workshop (JUIT Solan).
               </li>
             </ul>
           </motion.div>
@@ -190,9 +194,16 @@ export default function App() {
 
       {/* 3. Interactive Projects Section */}
       <section className="max-w-6xl mx-auto px-6 py-16 border-t border-gray-900 relative z-10">
-        <div className="mb-10">
-          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">Engineering Architecture</h3>
-          <p className="text-gray-400 text-sm">Click any project card to open deep architectural insights and live links.</p>
+        <div className="mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+          <div>
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2 flex items-center gap-3">
+              <Code2 className="text-teal-400" size={28} /> Engineering Projects
+            </h3>
+            <p className="text-gray-400 text-sm">Click any project module to inspect deep architectural specifications and links.</p>
+          </div>
+          <span className="text-xs text-teal-400 font-mono bg-teal-500/10 px-3 py-1 rounded border border-teal-500/20">
+            3 Active Deployments
+          </span>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -217,12 +228,12 @@ export default function App() {
               </div>
               
               <h4 className="text-xl font-bold text-gray-100 mb-1 group-hover:text-teal-400 transition-colors">{project.title}</h4>
-              <p className="text-teal-400 text-xs font-mono mb-3 tracking-wide">{project.subtitle}</p>
+              <p className="text-teal-400 text-xs mb-3 tracking-wide">{project.subtitle}</p>
               <p className="text-gray-300 text-sm mb-6 flex-grow leading-relaxed">{project.description}</p>
               
-              <div className="pt-4 border-t border-gray-800/80 flex items-center justify-between text-xs text-gray-400 font-mono">
-                <span>View Architecture</span>
-                <span className="text-teal-400 font-semibold group-hover:translate-x-1 transition-transform">&rarr;</span>
+              <div className="pt-4 border-t border-gray-800/80 flex items-center justify-between text-xs text-gray-400">
+                <span>Inspect Architecture</span>
+                <span className="text-teal-400 font-bold group-hover:translate-x-1 transition-transform">&rarr;</span>
               </div>
             </motion.div>
           ))}
@@ -249,7 +260,7 @@ export default function App() {
             >
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-teal-400 text-xs font-mono uppercase tracking-widest mb-1">{selectedProject.subtitle}</div>
+                  <div className="text-teal-400 text-xs uppercase tracking-widest mb-1">{selectedProject.subtitle}</div>
                   <h3 className="text-2xl font-bold text-gray-100">{selectedProject.title}</h3>
                 </div>
                 <button 
@@ -265,10 +276,10 @@ export default function App() {
               </p>
 
               <div className="mb-8">
-                <h4 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-3">Technologies Used</h4>
+                <h4 className="text-xs text-gray-400 uppercase tracking-wider mb-3">Core Tech Stack</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.techStack.map((tech) => (
-                    <span key={tech} className="px-3 py-1 bg-gray-800/80 border border-gray-700/60 rounded-md text-xs font-mono text-teal-300">
+                    <span key={tech} className="px-3 py-1 bg-gray-800/80 border border-gray-700/60 rounded-md text-xs text-teal-300">
                       {tech}
                     </span>
                   ))}
@@ -281,7 +292,7 @@ export default function App() {
                     href={selectedProject.link} 
                     target="_blank" 
                     rel="noreferrer"
-                    className="bg-teal-500 hover:bg-teal-400 text-gray-950 font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2"
+                    className="bg-teal-500 hover:bg-teal-400 text-gray-950 font-bold px-5 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2"
                   >
                     Open Live Deployment <ExternalLink size={16} />
                   </a>
