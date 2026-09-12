@@ -194,8 +194,8 @@ export default function App() {
               Hire Me
             </a>
             <a
-              href="/Nikhil_Moudgil_CV.pdf"
-              download="Nikhil_Moudgil_CV.pdf"
+              href="/https://drive.google.com/file/d/1NEn9-XRvhCZ7-TYBnR06XCcCZkd7RS8C/view?usp=sharing"
+              download="https://drive.google.com/file/d/1NEn9-XRvhCZ7-TYBnR06XCcCZkd7RS8C/view?usp=sharing"
               className="border border-gray-600 hover:border-indigo-400 text-gray-300 hover:text-white px-8 py-3.5 rounded-md transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm"
             >
               <Download size={16} /> Download CV
