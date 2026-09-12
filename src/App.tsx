@@ -17,7 +17,7 @@ import {
   Cpu,
   GraduationCap,
   BrainCircuit,
-  Rocket,
+  Rocket
 } from "lucide-react";
 
 // --- Types ---
@@ -29,7 +29,7 @@ interface Project {
   techStack: string[];
   icon: React.ReactNode;
   link?: string;
-  image?: string;
+  image?: string; 
 }
 
 // --- Data ---
@@ -43,7 +43,7 @@ const projectsData: Project[] = [
       "Repomind leverages AI to decode complex codebases. It fetches repository data, processes the structure, and outputs comprehensive summaries to help new contributors onboard rapidly.",
     techStack: ["Next.js", "Python", "OpenAI API", "Tailwind CSS"],
     icon: <Cpu size={24} />,
-    image: "/repomind_preview.png",
+    image: "/repomind_preview.png", 
   },
   {
     title: "Design Forge",
@@ -139,10 +139,7 @@ export default function App() {
           transition={{ staggerChildren: 0.12 }}
           className="flex-1 text-left space-y-6"
         >
-          <motion.p
-            variants={fadeUpVariant}
-            className="text-indigo-400 font-bold uppercase tracking-widest text-sm"
-          >
+          <motion.p variants={fadeUpVariant} className="text-indigo-400 font-bold uppercase tracking-widest text-sm">
             // System Online
           </motion.p>
 
@@ -197,9 +194,8 @@ export default function App() {
               Hire Me
             </a>
             <a
-              href="https://drive.google.com/file/d/1NEn9-XRvhCZ7-TYBnR06XCcCZkd7RS8C/view?usp=sharing"
-              target="_blank"
-              rel="noreferrer"
+              href="/Nikhil_CV.pdf"
+              download="/Nikhil_CV.pdf"
               className="border border-gray-600 hover:border-indigo-400 text-gray-300 hover:text-white px-8 py-3.5 rounded-md transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm"
             >
               <Download size={16} /> Download CV
@@ -264,11 +260,11 @@ export default function App() {
           viewport={{ once: true }}
           className="text-2xl sm:text-3xl font-bold mb-10 tracking-tight text-white flex items-center gap-3"
         >
-          <Terminal className="text-indigo-400" size={28} /> Background &
-          Capabilities
+          <Terminal className="text-indigo-400" size={28} /> Background & Capabilities
         </motion.h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
           {/* Education Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -277,35 +273,23 @@ export default function App() {
             className="group bg-gray-900/30 backdrop-blur-md p-8 rounded-3xl border border-gray-800 hover:border-indigo-500/40 hover:shadow-[0_0_30px_rgba(79,70,229,0.1)] transition-all duration-500 relative overflow-hidden"
           >
             <div className="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 blur-[40px] rounded-full group-hover:bg-indigo-500/20 transition-all" />
-
+            
             <div className="flex items-center gap-3 text-indigo-400 mb-8 relative z-10">
               <GraduationCap size={24} />
               <h4 className="text-xl font-bold text-gray-100">Education</h4>
             </div>
-
+            
             {/* Timeline UI */}
             <div className="space-y-6 relative z-10">
               <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-indigo-500 before:rounded-full before:shadow-[0_0_10px_rgba(99,102,241,0.8)] border-l-2 border-indigo-500/30 pb-4">
-                <h5 className="font-bold text-gray-100 text-base">
-                  B.Tech CSE
-                </h5>
-                <p className="text-indigo-300 text-sm mt-1 mb-2">
-                  IKGPTU Mohali
-                </p>
-                <span className="inline-block px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">
-                  Pursuing (CGPA: 7.55) • Expected 2027
-                </span>
+                <h5 className="font-bold text-gray-100 text-base">B.Tech CSE</h5>
+                <p className="text-indigo-300 text-sm mt-1 mb-2">IKGPTU Mohali</p>
+                <span className="inline-block px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">Pursuing (CGPA: 7.55) • Expected 2027</span>
               </div>
               <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-gray-600 before:rounded-full border-l-2 border-transparent">
-                <h5 className="font-bold text-gray-100 text-base">
-                  Diploma in Computer Eng.
-                </h5>
-                <p className="text-indigo-300 text-sm mt-1 mb-2">
-                  Govt Polytechnic Hamirpur
-                </p>
-                <span className="inline-block px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">
-                  Score: 75% • Completed 2024
-                </span>
+                <h5 className="font-bold text-gray-100 text-base">Diploma in Computer Eng.</h5>
+                <p className="text-indigo-300 text-sm mt-1 mb-2">Govt Polytechnic Hamirpur</p>
+                <span className="inline-block px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">Score: 75% • Completed 2024</span>
               </div>
             </div>
           </motion.div>
@@ -319,73 +303,39 @@ export default function App() {
             className="group bg-gray-900/30 backdrop-blur-md p-8 rounded-3xl border border-gray-800 hover:border-indigo-500/40 hover:shadow-[0_0_30px_rgba(79,70,229,0.1)] transition-all duration-500 relative overflow-hidden"
           >
             <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-indigo-500/10 blur-[40px] rounded-full group-hover:bg-indigo-500/20 transition-all" />
-
+            
             <div className="flex items-center gap-3 text-indigo-400 mb-6 relative z-10">
               <BrainCircuit size={24} />
-              <h4 className="text-xl font-bold text-gray-100">
-                Technical Arsenal
-              </h4>
+              <h4 className="text-xl font-bold text-gray-100">Technical Arsenal</h4>
             </div>
-
+            
             <div className="space-y-6 relative z-10">
               <div>
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">
-                  AI & Backend
-                </p>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">AI & Backend</p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">
-                    FastAPI
-                  </span>
-                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">
-                    RAG Pipelines
-                  </span>
-                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">
-                    LLMs
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Python
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Node.js
-                  </span>
+                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">FastAPI</span>
+                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">RAG Pipelines</span>
+                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">LLMs</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">Python</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">Node.js</span>
                 </div>
               </div>
               <div>
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">
-                  Frontend Stack
-                </p>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Frontend Stack</p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Next.js
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    React
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    JavaScript
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    TypeScript
-                  </span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">Next.js</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">React</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">JavaScript</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">TypeScript</span>
                 </div>
               </div>
               <div>
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">
-                  Infrastructure
-                </p>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Infrastructure</p>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Docker
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Microservices
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Git
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    SQL
-                  </span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">Docker</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">Microservices</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">Git</span>
+                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">SQL</span>
                 </div>
               </div>
             </div>
@@ -405,40 +355,22 @@ export default function App() {
               <Rocket size={24} />
               <h4 className="text-xl font-bold text-gray-100">Milestones</h4>
             </div>
-
+            
             {/* Timeline UI */}
             <div className="space-y-6 relative z-10">
               <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-indigo-500 before:rounded-full before:shadow-[0_0_10px_rgba(99,102,241,0.8)] border-l-2 border-indigo-500/30 pb-2">
-                <h5 className="font-bold text-gray-100 text-sm">
-                  Industrial Training
-                </h5>
-                <p className="text-indigo-300 text-xs mt-1 mb-2">
-                  Ex-Trainer Mohali
-                </p>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Completed comprehensive web development and deployment
-                  training.
-                </p>
+                <h5 className="font-bold text-gray-100 text-sm">Industrial Training</h5>
+                <p className="text-indigo-300 text-xs mt-1 mb-2">Ex-Trainer Mohali</p>
+                <p className="text-xs text-gray-400 leading-relaxed">Completed comprehensive web development and deployment training.</p>
               </div>
               <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-indigo-500 before:rounded-full before:shadow-[0_0_10px_rgba(99,102,241,0.8)] border-l-2 border-indigo-500/30 pb-2">
-                <h5 className="font-bold text-gray-100 text-sm">
-                  App Dev Training
-                </h5>
-                <p className="text-indigo-300 text-xs mt-1 mb-2">
-                  Prerna-Gati Technologies
-                </p>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  6 weeks of hands-on software development training.
-                </p>
+                <h5 className="font-bold text-gray-100 text-sm">App Dev Training</h5>
+                <p className="text-indigo-300 text-xs mt-1 mb-2">Prerna-Gati Technologies</p>
+                <p className="text-xs text-gray-400 leading-relaxed">6 weeks of hands-on software development training.</p>
               </div>
               <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-gray-600 before:rounded-full border-l-2 border-transparent">
-                <h5 className="font-bold text-gray-100 text-sm">
-                  Hackathons & Workshops
-                </h5>
-                <p className="text-xs text-gray-400 mt-2 leading-relaxed">
-                  Participated in HACK-O-OCTO, Hack-2 Hatch, and VLSI Design
-                  Workshops.
-                </p>
+                <h5 className="font-bold text-gray-100 text-sm">Hackathons & Workshops</h5>
+                <p className="text-xs text-gray-400 mt-2 leading-relaxed">Participated in HACK-O-OCTO, Hack-2 Hatch, and VLSI Design Workshops.</p>
               </div>
             </div>
           </motion.div>
