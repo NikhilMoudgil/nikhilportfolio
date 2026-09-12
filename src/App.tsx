@@ -197,8 +197,8 @@ export default function App() {
               Hire Me
             </a>
             <a
-              href="/Nikhil_CV.pdf"
-              download="Nikhil_CV.pdf"
+              href="/nikhilcv.pdf"
+              download="nikhilcv.pdf.pdf"
               className="border border-gray-600 hover:border-indigo-400 text-gray-300 hover:text-white px-8 py-3.5 rounded-md transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm"
             >
               <Download/> Download CV
