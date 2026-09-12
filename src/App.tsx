@@ -201,7 +201,7 @@ export default function App() {
               download="Nikhil_CV.pdf"
               className="border border-gray-600 hover:border-indigo-400 text-gray-300 hover:text-white px-8 py-3.5 rounded-md transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm"
             >
-              <Download size={16} /> Download CV
+              <Download/> Download CV
             </a>
           </motion.div>
 
