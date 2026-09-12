@@ -137,12 +137,16 @@ export default function App() {
           transition={{ staggerChildren: 0.12 }}
           className="flex-1 text-left space-y-6"
         >
-          <motion.p
+          <motion.div
             variants={fadeUpVariant}
-            className="text-indigo-400 font-bold uppercase tracking-widest text-sm"
+            className="flex items-center gap-3 text-indigo-400 font-bold uppercase tracking-widest text-sm"
           >
-            // System Online
-          </motion.p>
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+            </span>
+            // Available for Internships
+          </motion.div>
 
           <motion.h1
             variants={fadeUpVariant}
@@ -153,10 +157,14 @@ export default function App() {
 
           <motion.h2
             variants={fadeUpVariant}
-            className="text-4xl sm:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400 leading-tight pb-2"
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400 leading-tight pb-2"
           >
-            Software Engineer
+            Full-Stack Developer
           </motion.h2>
+
+          <motion.p variants={fadeUpVariant} className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed">
+            Final year Computer Science student building scalable MERN stack applications and exploring modern AI/RAG pipelines. Passionate about system design and actively seeking internship opportunities.
+          </motion.p>
 
           {/* Social Icons */}
           <motion.div variants={fadeUpVariant} className="flex gap-4 pt-2">
@@ -196,10 +204,10 @@ export default function App() {
             </a>
             <a
               href="/nikhilcv.pdf"
-              download="nikhilcv.pdf.pdf"
+              download="nikhilcv.pdf"
               className="border border-gray-600 hover:border-indigo-400 text-gray-300 hover:text-white px-8 py-3.5 rounded-md transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm"
             >
-              <Download/> Download CV
+              <Download size={16} /> Download CV
             </a>
           </motion.div>
 
@@ -261,8 +269,7 @@ export default function App() {
           viewport={{ once: true }}
           className="text-2xl sm:text-3xl font-bold mb-10 tracking-tight text-white flex items-center gap-3"
         >
-          <Terminal className="text-indigo-400" size={28} /> Background &
-          Capabilities
+          <Terminal className="text-indigo-400" size={28} /> Background & Capabilities
         </motion.h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
