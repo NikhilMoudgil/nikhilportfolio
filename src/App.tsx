@@ -24,6 +24,8 @@ import {
   Layers,
 } from "lucide-react";
 
+import HeroDeskScene from "./components/HeroDeskScene";
+
 // --- 3D Tilt Wrapper for Image and Cards (No heavy 3D models needed) ---
 function Card3DTilt({ children, intensity = 15, scaleOnHover = false }: { children: React.ReactNode, intensity?: number, scaleOnHover?: boolean }) {
   const x = useMotionValue(0);
@@ -250,6 +252,9 @@ export default function App() {
 
       {/* --- Hero Section --- */}
       <section id="home" className="max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-20 flex flex-col-reverse md:flex-row items-center justify-between gap-12 relative z-10">
+        {/* Isometric desk render — sits at z-0, behind the text (z-20) and photo (z-30) */}
+        <HeroDeskScene />
+
         <motion.div initial="hidden" animate="visible" transition={{ staggerChildren: 0.12 }} className="flex-1 text-left space-y-6 relative z-20">
           <motion.div variants={fadeUpVariant} className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 font-bold uppercase tracking-wider text-xs">
             <span className="relative flex h-2.5 w-2.5">
@@ -300,7 +305,7 @@ export default function App() {
           initial={{ opacity: 0, scale: 0.9 }} 
           animate={{ opacity: 1, scale: 1 }} 
           transition={{ duration: 0.6 }} 
-          className="flex-1 flex flex-col items-center justify-center w-full max-w-[370px] relative z-30"
+          className="flex-1 flex flex-col items-center justify-center w-full max-w-[300px] relative z-30"
         >
           <Card3DTilt intensity={12} scaleOnHover={true}>
             <div className="w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-indigo-500/40 shadow-[0_20px_50px_rgba(79,70,229,0.25)] relative group cursor-pointer">
