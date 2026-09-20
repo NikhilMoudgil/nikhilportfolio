@@ -827,7 +827,7 @@ export type HeroDeskSceneProps = HeroDeskSceneOptions & {
 };
 
 const DEFAULT_BOX =
-  "pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[120%] w-[64%] -translate-x-1/2 -translate-y-1/2 select-none lg:block";
+  "pointer-events-none absolute left-1/2 top-1/2 z-0 h-[100%] w-[100%] sm:w-[95%] sm:h-[110%] md:w-[85%] md:h-[120%] lg:w-[64%] lg:h-[120%] -translate-x-1/2 -translate-y-1/2 select-none";
 
 /** Feathered edges, so the render dissolves into the page instead of ending. */
 const FEATHER = "radial-gradient(70% 70% at 50% 50%, #000 46%, transparent 84%)";

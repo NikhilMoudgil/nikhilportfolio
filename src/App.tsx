@@ -251,11 +251,11 @@ export default function App() {
       </nav>
 
       {/* --- Hero Section --- */}
-      <section id="home" className="max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-20 flex flex-col-reverse md:flex-row items-center justify-between gap-12 relative z-10">
+      <section id="home" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 md:py-16 lg:pt-10 lg:pb-20 flex flex-col-reverse md:flex-row items-center justify-between gap-6 sm:gap-8 md:gap-10 lg:gap-12 relative z-10">
         {/* Isometric desk render — sits at z-0, behind the text (z-20) and photo (z-30) */}
         <HeroDeskScene />
 
-        <motion.div initial="hidden" animate="visible" transition={{ staggerChildren: 0.12 }} className="flex-1 text-left space-y-6 relative z-20">
+        <motion.div initial="hidden" animate="visible" transition={{ staggerChildren: 0.12 }} className="flex-1 text-left space-y-4 sm:space-y-5 md:space-y-6 relative z-20">
           <motion.div variants={fadeUpVariant} className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 font-bold uppercase tracking-wider text-xs">
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
@@ -278,23 +278,23 @@ export default function App() {
           </motion.p>
 
           {/* Social Links */}
-          <motion.div variants={fadeUpVariant} className="flex items-center gap-4 pt-2">
-            <a href="https://github.com/NikhilMoudgil" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md group">
-              <GitBranch size={18} className="group-hover:rotate-12 transition-transform" />
+          <motion.div variants={fadeUpVariant} className="flex items-center gap-3 sm:gap-4 pt-2">
+            <a href="https://github.com/NikhilMoudgil" target="_blank" rel="noreferrer" className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md group">
+              <GitBranch size={16} className="sm:block group-hover:rotate-12 transition-transform" />
             </a>
-            <a href="https://www.linkedin.com/in/nikhil-moudgil-995408270/" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md group">
-              <Globe size={18} className="group-hover:rotate-12 transition-transform" />
+            <a href="https://www.linkedin.com/in/nikhil-moudgil-995408270/" target="_blank" rel="noreferrer" className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md group">
+              <Globe size={16} className="sm:block group-hover:rotate-12 transition-transform" />
             </a>
-            <button onClick={handleCopyEmail} className="w-11 h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md">
+            <button onClick={handleCopyEmail} className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md">
               <Mail size={18} />
             </button>
           </motion.div>
 
-          <motion.div variants={fadeUpVariant} className="flex flex-wrap items-center gap-4 pt-4">
-            <a href="mailto:nikhilmoudgil799@gmail.com" className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(79,70,229,0.35)] text-sm flex items-center gap-2">
+          <motion.div variants={fadeUpVariant} className="flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4 pt-2 sm:pt-4 w-full sm:w-auto">
+            <a href="mailto:nikhilmoudgil799@gmail.com" className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(79,70,229,0.35)] text-sm flex items-center justify-center gap-2 w-full sm:w-auto">
               Hire Me <ArrowUpRight size={18} />
             </a>
-            <a href="/nikhilcv.pdf" download="nikhilcv.pdf" className="border border-gray-700 hover:border-indigo-400 bg-gray-900/40 hover:bg-gray-800 text-gray-300 hover:text-white px-7 py-3.5 rounded-xl transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm">
+            <a href="/nikhilcv.pdf" download="nikhilcv.pdf" className="border border-gray-700 hover:border-indigo-400 bg-gray-900/40 hover:bg-gray-800 text-gray-300 hover:text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm backdrop-blur-sm w-full sm:w-auto">
               <Download size={16} /> Download CV
             </a>
           </motion.div>
@@ -305,7 +305,7 @@ export default function App() {
           initial={{ opacity: 0, scale: 0.9 }} 
           animate={{ opacity: 1, scale: 1 }} 
           transition={{ duration: 0.6 }} 
-          className="flex-1 flex flex-col items-center justify-center w-full max-w-[300px] relative z-30"
+          className="flex-1 flex flex-col items-center justify-center w-full max-w-[250px] sm:max-w-[280px] md:max-w-[300px] lg:max-w-[350px] relative z-30"
         >
           <Card3DTilt intensity={12} scaleOnHover={true}>
             <div className="w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-indigo-500/40 shadow-[0_20px_50px_rgba(79,70,229,0.25)] relative group cursor-pointer">
