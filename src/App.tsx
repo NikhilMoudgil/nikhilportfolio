@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 import {
   Mail,
   ExternalLink,
@@ -16,592 +16,613 @@ import {
   GraduationCap,
   BrainCircuit,
   Rocket,
+  Search,
+  Check,
+  Menu,
+  Briefcase,
+  Sparkles,
+  Layers,
 } from "lucide-react";
 
-// --- Types ---
+// --- 3D Tilt Wrapper for Image and Cards (No heavy 3D models needed) ---
+function Card3DTilt({ children, intensity = 15, scaleOnHover = false }: { children: React.ReactNode, intensity?: number, scaleOnHover?: boolean }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [`${intensity}deg`, `-${intensity}deg`]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [`-${intensity}deg`, `${intensity}deg`]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      whileHover={scaleOnHover ? { scale: 1.02 } : {}}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className="w-full h-full perspective-1000"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// --- Types & Data Restored ---
+type ProjectCategory = "All" | "AI / RAG" | "Full Stack" | "Systems / SQL";
+
 interface Project {
+  id: string;
   title: string;
   subtitle: string;
   description: string;
   longDescription: string;
   techStack: string[];
+  category: ProjectCategory;
   icon: React.ReactNode;
   link?: string;
+  github?: string;
   image?: string;
+  featured?: boolean;
 }
 
-// --- Data ---
 const projectsData: Project[] = [
   {
+    id: "repomind",
     title: "Repomind",
     subtitle: "AI-Powered Repository Analyzer",
-    description:
-      "Intelligent developer tool that analyzes GitHub repositories to provide architectural summaries, codebase insights, and documentation generation.",
-    longDescription:
-      "Repomind leverages AI to decode complex codebases. It fetches repository data, processes the structure, and outputs comprehensive summaries to help new contributors onboard rapidly.",
-    techStack: ["Next.js", "Python", "OpenAI API", "Tailwind CSS"],
+    category: "AI / RAG",
+    featured: true,
+    description: "Intelligent developer tool that analyzes GitHub repositories to provide architectural summaries, codebase insights, and documentation generation.",
+    longDescription: "Repomind leverages AI to decode complex codebases. It fetches repository data, processes file trees, and outputs comprehensive architectural summaries to help new contributors onboard rapidly.",
+    techStack: ["Next.js", "Python", "FastAPI", "OpenAI API", "Tailwind CSS"],
     icon: <Cpu size={24} />,
-    image: "/repomind_preview.png",
+    github: "https://github.com/NikhilMoudgil",
   },
   {
+    id: "design-forge",
     title: "Design Forge",
     subtitle: "Dynamic UI/UX Generator",
-    description:
-      "A creative utility platform for developers to rapidly prototype and generate accessible, highly-customizable UI components.",
-    longDescription:
-      "Design Forge accelerates frontend workflows by offering a drag-and-drop interface and parameter-based component generation, exporting clean, production-ready React/Tailwind code.",
-    techStack: ["React", "TypeScript", "Framer Motion", "Vite"],
+    category: "Full Stack",
+    featured: true,
+    description: "A creative utility platform for developers to rapidly prototype and generate accessible, highly-customizable UI components.",
+    longDescription: "Design Forge accelerates frontend workflows by offering a parameter-based component generation interface, exporting clean, production-ready React and Tailwind code snippets.",
+    techStack: ["React", "TypeScript", "Framer Motion", "Vite", "Tailwind"],
     icon: <Code2 size={24} />,
     link: "https://designforge-delta.vercel.app/",
-    image: "/designforge_preview.png",
+    github: "https://github.com/NikhilMoudgil",
   },
   {
+    id: "edunexus",
     title: "EduNexus",
     subtitle: "API-Based Roadmap Generating Platform",
-    description:
-      "An API-based platform where users generate dynamic roadmaps based on their field of interest, complete with an interactive community.",
-    longDescription:
-      "EduNexus solves static learning curves by allowing users to input personalized data fields to instantly fetch dynamic curriculum roadmaps. Built with robust API routing and an integrated peer community module.",
-    techStack: ["Next.js", "React", "TypeScript", "REST APIs"],
+    category: "Full Stack",
+    featured: true,
+    description: "An API-based platform where users generate dynamic roadmaps based on their field of interest, complete with an interactive community.",
+    longDescription: "EduNexus solves static learning curves by allowing users to input personalized data fields to instantly fetch dynamic curriculum roadmaps. Built with robust API routing and an integrated peer community module.",
+    techStack: ["Next.js", "React", "TypeScript", "REST APIs", "Node.js"],
     icon: <Terminal size={24} />,
     link: "https://edu-nexus-teal.vercel.app",
-    image: "/edunexus-preview.png",
+    github: "https://github.com/NikhilMoudgil",
   },
   {
+    id: "venture-bridge",
     title: "Venture-Bridge",
     subtitle: "Entrepreneur & Investor Ecosystem",
-    description:
-      "A specialized platform for entrepreneurs to pitch ideas and investors to discover inventions and interact seamlessly.",
-    longDescription:
-      "Venture-Bridge bridges the capital and execution gap. It establishes a secure ecosystem where startup founders pitch concepts, and venture capital stakeholders inspect and engage directly.",
-    techStack: ["MERN Stack", "Node.js", "Express", "MongoDB"],
+    category: "Full Stack",
+    description: "A specialized platform for entrepreneurs to pitch ideas and investors to discover inventions and interact seamlessly.",
+    longDescription: "Venture-Bridge bridges the capital and execution gap. It establishes a secure ecosystem where startup founders pitch concepts, and venture capital stakeholders inspect and engage directly.",
+    techStack: ["MongoDB", "Express", "React", "Node.js", "JWT Auth"],
     icon: <Users size={24} />,
+    github: "https://github.com/NikhilMoudgil",
   },
   {
+    id: "airisto",
     title: "Airisto",
     subtitle: "DBMS-Based AC Services Marketplace",
-    description:
-      "An administrative marketplace built using HTML, CSS, and JavaScript, powered by backend DBMS logic for service management.",
-    longDescription:
-      "Airisto streamlines air-conditioning service operations. It features administrative control portals and a consumer marketplace heavily managed via structured relational database management systems.",
-    techStack: ["HTML5", "CSS3", "JavaScript", "DBMS", "SQL"],
+    category: "Systems / SQL",
+    description: "An administrative marketplace built using HTML, CSS, and JavaScript, powered by backend DBMS logic for service management.",
+    longDescription: "Airisto streamlines air-conditioning service operations. It features administrative control portals and a consumer marketplace heavily managed via structured relational database systems.",
+    techStack: ["HTML5", "CSS3", "JavaScript", "SQL", "Relational Database"],
     icon: <Database size={24} />,
+    github: "https://github.com/NikhilMoudgil",
+  },
+];
+
+const skillsCategories = [
+  {
+    title: "AI & Backend Architecture",
+    icon: <BrainCircuit className="text-indigo-400" size={20} />,
+    skills: ["FastAPI", "RAG Pipelines", "LLMs & Prompt Eng", "Python", "Node.js", "Express.js", "REST APIs"],
+  },
+  {
+    title: "Frontend Engineering",
+    icon: <Code2 className="text-indigo-400" size={20} />,
+    skills: ["Next.js", "React", "TypeScript", "JavaScript (ES6+)", "Tailwind CSS", "Framer Motion", "Redux Toolkit"],
+  },
+  {
+    title: "Database & DevOps",
+    icon: <Database className="text-indigo-400" size={20} />,
+    skills: ["Docker", "MongoDB", "SQL / PostgreSQL", "Microservices", "Git / GitHub", "Vercel / Render"],
   },
 ];
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"education" | "experience" | "milestones">("education");
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedProject(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("nikhilmoudgil799@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
+
+  const filteredProjects = projectsData.filter((project) => {
+    const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.techStack.some((tech) => tech.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
 
   const fadeUpVariant = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 25 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   return (
-    <main className="min-h-screen bg-[#07090e] text-gray-100 font-mono selection:bg-indigo-500 selection:text-white pb-24 relative overflow-hidden">
-      {/* Background Ambience Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-indigo-600/10 blur-[180px] pointer-events-none rounded-full" />
+    <main className="min-h-screen bg-[#07090e] text-gray-100 font-mono selection:bg-indigo-500 selection:text-white pb-24 relative overflow-x-hidden">
+      {/* Dynamic Ambient Background Glows */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-indigo-600/10 blur-[180px] pointer-events-none rounded-full -z-10" />
+      <div className="absolute top-[40%] -right-40 w-[600px] h-[600px] bg-blue-600/10 blur-[200px] pointer-events-none rounded-full -z-10" />
+      <div className="absolute bottom-10 left-0 w-[600px] h-[600px] bg-purple-600/10 blur-[200px] pointer-events-none rounded-full -z-10" />
 
-      {/* --- Navigation --- */}
-      <nav className="max-w-7xl mx-auto px-6 lg:px-12 py-8 flex justify-between items-center relative z-20">
-        <div className="text-2xl font-extrabold tracking-widest text-white hover:text-indigo-400 transition-colors cursor-pointer">
-          NIKHIL<span className="text-indigo-500">.Builds</span>
-        </div>
-        <div className="hidden md:flex gap-10 text-sm font-medium text-gray-400">
-          <a href="#home" className="hover:text-white transition-colors">
-            Home
-          </a>
-          <a href="#background" className="hover:text-white transition-colors">
-            About me
-          </a>
-          <a href="#portfolio" className="hover:text-white transition-colors">
-            Portfolio
-          </a>
-        </div>
-        <a
-          href="mailto:nikhilmoudgil799@gmail.com"
-          className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-md font-bold transition-all shadow-[0_0_15px_rgba(79,70,229,0.4)] text-sm"
-        >
-          Hire Me
+      {/* --- Toast Notification --- */}
+      <AnimatePresence>
+        {copiedEmail && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -20, x: "-50%" }}
+            className="fixed top-6 left-1/2 z-50 bg-indigo-600 text-white px-5 py-2.5 rounded-full shadow-xl flex items-center gap-2 text-xs font-bold border border-indigo-400/30"
+          >
+            <Check size={16} /> Email copied to clipboard!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* --- Navigation Bar --- */}
+      <nav className="max-w-7xl mx-auto px-6 lg:px-12 py-8 flex justify-between items-center relative z-30">
+        <a href="#home" className="text-2xl font-extrabold tracking-widest text-white hover:text-indigo-400 transition-colors flex items-center gap-2">
+          <Terminal className="text-indigo-500" size={24} />
+          <span>NIKHIL<span className="text-indigo-500">MOUDGIL</span></span>
         </a>
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+          <a href="#home" className="hover:text-white transition-colors">Home</a>
+          <a href="#about" className="hover:text-white transition-colors">About & Skills</a>
+          <a href="#portfolio" className="hover:text-white transition-colors">Portfolio</a>
+        </div>
+        <div className="hidden md:flex items-center gap-4">
+          <button onClick={handleCopyEmail} className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 border border-gray-800 hover:border-gray-700 px-3 py-2 rounded-lg bg-gray-900/50">
+            <Mail size={14} /> nikhilmoudgil799@gmail.com
+          </button>
+          <a href="mailto:nikhilmoudgil799@gmail.com" className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(79,70,229,0.4)] text-sm flex items-center gap-1.5">
+            Hire Me <ArrowUpRight size={16} />
+          </a>
+        </div>
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-gray-300 hover:text-white p-2 rounded-lg bg-gray-900 border border-gray-800">
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </nav>
 
       {/* --- Hero Section --- */}
-      <section
-        id="home"
-        className="max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-20 flex flex-col md:flex-row items-center justify-between gap-16 relative z-10"
-      >
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          transition={{ staggerChildren: 0.12 }}
-          className="flex-1 text-left space-y-6"
-        >
-          <motion.div
-            variants={fadeUpVariant}
-            className="flex items-center gap-3 text-indigo-400 font-bold uppercase tracking-widest text-sm"
-          >
-            <span className="relative flex h-3 w-3">
+      <section id="home" className="max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-20 flex flex-col-reverse md:flex-row items-center justify-between gap-12 relative z-10">
+        <motion.div initial="hidden" animate="visible" transition={{ staggerChildren: 0.12 }} className="flex-1 text-left space-y-6 relative z-20">
+          <motion.div variants={fadeUpVariant} className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 font-bold uppercase tracking-wider text-xs">
+            <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
             </span>
-            // Available for Internships
+            Available for Software Engineering Internships
           </motion.div>
 
-          <motion.h1
-            variants={fadeUpVariant}
-            className="text-4xl sm:text-6xl font-bold text-white"
-          >
-            Nikhil Moudgil
-          </motion.h1>
+          <motion.div variants={fadeUpVariant}>
+            <h1 className="text-4xl sm:text-6xl font-bold text-white tracking-tight leading-none">
+              Nikhil Moudgil
+            </h1>
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 leading-tight mt-2">
+              Full-Stack & AI Engineer
+            </h2>
+          </motion.div>
 
-          <motion.h2
-            variants={fadeUpVariant}
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400 leading-tight pb-2"
-          >
-            Full-Stack Developer
-          </motion.h2>
-
-          <motion.p variants={fadeUpVariant} className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed">
-            Final year Computer Science student building scalable MERN stack applications and exploring modern AI/RAG pipelines. Passionate about system design and actively seeking internship opportunities.
+          <motion.p variants={fadeUpVariant} className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed pt-2">
+            Final year Computer Science student building scalable MERN stack applications, microservices, and modern AI/RAG pipelines. Focused on clean architecture, optimized database queries, and rapid execution.
           </motion.p>
 
-          {/* Social Icons */}
-          <motion.div variants={fadeUpVariant} className="flex gap-4 pt-2">
-            <a
-              href="https://github.com/NikhilMoudgil"
-              target="_blank"
-              rel="noreferrer"
-              className="w-11 h-11 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-lg"
-            >
-              <GitBranch size={18} />
+          {/* Social Links */}
+          <motion.div variants={fadeUpVariant} className="flex items-center gap-4 pt-2">
+            <a href="https://github.com/NikhilMoudgil" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md group">
+              <GitBranch size={18} className="group-hover:rotate-12 transition-transform" />
             </a>
-            <a
-              href="https://www.linkedin.com/in/nikhil-moudgil-995408270/"
-              target="_blank"
-              rel="noreferrer"
-              className="w-11 h-11 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-lg"
-            >
-              <Globe size={18} />
+            <a href="https://www.linkedin.com/in/nikhil-moudgil-995408270/" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md group">
+              <Globe size={18} className="group-hover:rotate-12 transition-transform" />
             </a>
-            <a
-              href="mailto:nikhilmoudgil799@gmail.com"
-              className="w-11 h-11 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-lg"
-            >
+            <button onClick={handleCopyEmail} className="w-11 h-11 rounded-xl border border-gray-800 bg-gray-900/60 flex items-center justify-center text-gray-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-md">
               <Mail size={18} />
-            </a>
+            </button>
           </motion.div>
 
-          <motion.div
-            variants={fadeUpVariant}
-            className="flex flex-wrap items-center gap-4 pt-6"
-          >
-            <a
-              href="mailto:nikhilmoudgil799@gmail.com"
-              className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-md transition-all duration-300 shadow-[0_0_20px_rgba(79,70,229,0.3)] text-sm"
-            >
-              Hire Me
+          <motion.div variants={fadeUpVariant} className="flex flex-wrap items-center gap-4 pt-4">
+            <a href="mailto:nikhilmoudgil799@gmail.com" className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(79,70,229,0.35)] text-sm flex items-center gap-2">
+              Hire Me <ArrowUpRight size={18} />
             </a>
-            <a
-              href="/nikhilcv.pdf"
-              download="nikhilcv.pdf"
-              className="border border-gray-600 hover:border-indigo-400 text-gray-300 hover:text-white px-8 py-3.5 rounded-md transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm"
-            >
+            <a href="/nikhilcv.pdf" download="nikhilcv.pdf" className="border border-gray-700 hover:border-indigo-400 bg-gray-900/40 hover:bg-gray-800 text-gray-300 hover:text-white px-7 py-3.5 rounded-xl transition-all duration-300 flex items-center gap-2 text-sm backdrop-blur-sm">
               <Download size={16} /> Download CV
             </a>
           </motion.div>
-
-          {/* Stats Box */}
-          <motion.div
-            variants={fadeUpVariant}
-            className="flex flex-wrap gap-8 bg-gray-900/40 backdrop-blur-md p-6 rounded-2xl mt-12 w-fit border border-gray-800 shadow-xl"
-          >
-            <div>
-              <h4 className="text-2xl font-bold text-indigo-400">5+</h4>
-              <p className="text-xs text-gray-400 uppercase tracking-wide mt-1">
-                Projects Done
-              </p>
-            </div>
-            <div className="w-px bg-gray-700/50 hidden sm:block"></div>
-            <div>
-              <h4 className="text-2xl font-bold text-indigo-400">3</h4>
-              <p className="text-xs text-gray-400 uppercase tracking-wide mt-1">
-                Active Deployments
-              </p>
-            </div>
-            <div className="w-px bg-gray-700/50 hidden sm:block"></div>
-            <div>
-              <h4 className="text-2xl font-bold text-indigo-400">7.55</h4>
-              <p className="text-xs text-gray-400 uppercase tracking-wide mt-1">
-                Current CGPA
-              </p>
-            </div>
-          </motion.div>
         </motion.div>
 
-        {/* Circular Profile Image */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex-1 flex justify-center md:justify-end"
+        {/* Right Side: Interactive 3D Image Display (Perfect Place) */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }} 
+          animate={{ opacity: 1, scale: 1 }} 
+          transition={{ duration: 0.6 }} 
+          className="flex-1 flex flex-col items-center justify-center w-full max-w-[370px] relative z-30"
         >
-          <div className="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full overflow-hidden border-4 border-gray-900 shadow-[0_0_50px_rgba(79,70,229,0.15)] group bg-gray-900 z-10">
-            <img
-              src="/profile.jpeg"
-              alt="Nikhil Moudgil"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale hover:grayscale-0"
-            />
-            <div className="absolute inset-0 bg-indigo-900/20 pointer-events-none group-hover:bg-transparent transition-colors duration-500" />
-          </div>
-          <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-indigo-600/5 border border-indigo-500/20 -z-10 translate-x-5 translate-y-5"></div>
+          <Card3DTilt intensity={12} scaleOnHover={true}>
+            <div className="w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-indigo-500/40 shadow-[0_20px_50px_rgba(79,70,229,0.25)] relative group cursor-pointer">
+              <img 
+                src="/profile.jpeg" 
+                alt="Nikhil Moudgil" 
+                className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent pointer-events-none"></div>
+              <div className="absolute bottom-5 left-5 right-5 flex justify-between items-center z-10">
+                <div>
+                  <p className="text-white font-bold text-lg">Nikhil Moudgil</p>
+                  <p className="text-indigo-400 text-xs font-semibold tracking-wider uppercase mt-1">CS Undergraduate</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-indigo-500/20 backdrop-blur-md flex items-center justify-center border border-indigo-400/50">
+                  <Terminal size={18} className="text-indigo-300" />
+                </div>
+              </div>
+            </div>
+          </Card3DTilt>
         </motion.div>
       </section>
 
-      {/* --- Upgraded Background & Capabilities Section --- */}
-      <section
-        id="background"
-        className="max-w-7xl mx-auto px-6 lg:px-12 py-16 relative z-10"
-      >
-        <motion.h3
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-2xl sm:text-3xl font-bold mb-10 tracking-tight text-white flex items-center gap-3"
-        >
-          <Terminal className="text-indigo-400" size={28} /> Background & Capabilities
-        </motion.h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Education Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="group bg-gray-900/30 backdrop-blur-md p-8 rounded-3xl border border-gray-800 hover:border-indigo-500/40 hover:shadow-[0_0_30px_rgba(79,70,229,0.1)] transition-all duration-500 relative overflow-hidden"
-          >
-            <div className="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 blur-[40px] rounded-full group-hover:bg-indigo-500/20 transition-all" />
-
-            <div className="flex items-center gap-3 text-indigo-400 mb-8 relative z-10">
-              <GraduationCap size={24} />
-              <h4 className="text-xl font-bold text-gray-100">Education</h4>
-            </div>
-
-            {/* Timeline UI */}
-            <div className="space-y-6 relative z-10">
-              <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-indigo-500 before:rounded-full before:shadow-[0_0_10px_rgba(99,102,241,0.8)] border-l-2 border-indigo-500/30 pb-4">
-                <h5 className="font-bold text-gray-100 text-base">
-                  B.Tech CSE
-                </h5>
-                <p className="text-indigo-300 text-sm mt-1 mb-2">
-                  IKGPTU Mohali
-                </p>
-                <span className="inline-block px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">
-                  Pursuing (CGPA: 7.55) • Expected 2027
-                </span>
-              </div>
-              <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-gray-600 before:rounded-full border-l-2 border-transparent">
-                <h5 className="font-bold text-gray-100 text-base">
-                  Diploma in Computer Eng.
-                </h5>
-                <p className="text-indigo-300 text-sm mt-1 mb-2">
-                  Govt Polytechnic Hamirpur
-                </p>
-                <span className="inline-block px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">
-                  Score: 75% • Completed 2024
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Technical Arsenal Card (Upgraded with Badges) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="group bg-gray-900/30 backdrop-blur-md p-8 rounded-3xl border border-gray-800 hover:border-indigo-500/40 hover:shadow-[0_0_30px_rgba(79,70,229,0.1)] transition-all duration-500 relative overflow-hidden"
-          >
-            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-indigo-500/10 blur-[40px] rounded-full group-hover:bg-indigo-500/20 transition-all" />
-
-            <div className="flex items-center gap-3 text-indigo-400 mb-6 relative z-10">
-              <BrainCircuit size={24} />
-              <h4 className="text-xl font-bold text-gray-100">
-                Technical Arsenal
-              </h4>
-            </div>
-
-            <div className="space-y-6 relative z-10">
-              <div>
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">
-                  AI & Backend
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">
-                    FastAPI
-                  </span>
-                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">
-                    RAG Pipelines
-                  </span>
-                  <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 rounded-md text-xs font-semibold shadow-[0_0_10px_rgba(79,70,229,0.1)]">
-                    LLMs
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Python
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Node.js
-                  </span>
-                </div>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">
-                  Frontend Stack
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Next.js
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    React
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    JavaScript
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    TypeScript
-                  </span>
-                </div>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">
-                  Infrastructure
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Docker
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Microservices
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    Git
-                  </span>
-                  <span className="px-3 py-1 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-md text-xs">
-                    SQL
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Milestones Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="group bg-gray-900/30 backdrop-blur-md p-8 rounded-3xl border border-gray-800 hover:border-indigo-500/40 hover:shadow-[0_0_30px_rgba(79,70,229,0.1)] transition-all duration-500 relative overflow-hidden"
-          >
-            <div className="absolute -left-10 top-10 w-32 h-32 bg-indigo-500/10 blur-[40px] rounded-full group-hover:bg-indigo-500/20 transition-all" />
-
-            <div className="flex items-center gap-3 text-indigo-400 mb-8 relative z-10">
-              <Rocket size={24} />
-              <h4 className="text-xl font-bold text-gray-100">Milestones</h4>
-            </div>
-
-            {/* Timeline UI */}
-            <div className="space-y-6 relative z-10">
-              <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-indigo-500 before:rounded-full before:shadow-[0_0_10px_rgba(99,102,241,0.8)] border-l-2 border-indigo-500/30 pb-2">
-                <h5 className="font-bold text-gray-100 text-sm">
-                  Industrial Training
-                </h5>
-                <p className="text-indigo-300 text-xs mt-1 mb-2">
-                  Ex-Trainer Mohali
-                </p>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Completed comprehensive web development and deployment
-                  training.
-                </p>
-              </div>
-              <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-indigo-500 before:rounded-full before:shadow-[0_0_10px_rgba(99,102,241,0.8)] border-l-2 border-indigo-500/30 pb-2">
-                <h5 className="font-bold text-gray-100 text-sm">
-                  App Dev Training
-                </h5>
-                <p className="text-indigo-300 text-xs mt-1 mb-2">
-                  Prerna-Gati Technologies
-                </p>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  6 weeks of hands-on software development training.
-                </p>
-              </div>
-              <div className="relative pl-6 before:absolute before:left-[-5px] before:top-1.5 before:w-3 before:h-3 before:bg-gray-600 before:rounded-full border-l-2 border-transparent">
-                <h5 className="font-bold text-gray-100 text-sm">
-                  Hackathons & Workshops
-                </h5>
-                <p className="text-xs text-gray-400 mt-2 leading-relaxed">
-                  Participated in HACK-O-OCTO, Hack-2 Hatch, and VLSI Design
-                  Workshops.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* --- Portfolio / Projects Section --- */}
-      <section
-        id="portfolio"
-        className="max-w-7xl mx-auto px-6 lg:px-12 py-16 relative z-10"
-      >
+      {/* --- Section: Skills & Background (Restored Full Version) --- */}
+      <section id="about" className="max-w-7xl mx-auto px-6 lg:px-12 py-16 relative z-10">
         <div className="mb-12">
           <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2 flex items-center gap-3">
-            <Code2 className="text-indigo-400" size={28} /> Portfolio Projects
+            <Sparkles className="text-indigo-400" size={28} /> Capabilities & Background
           </h3>
-          <p className="text-gray-400 text-sm">
-            Click to inspect architectural details and deployment links.
-          </p>
+          <p className="text-gray-400 text-sm">Technical skills, academic qualifications, and development experience.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projectsData.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              onClick={() => setSelectedProject(project)}
-              className="bg-gray-900/30 backdrop-blur-md rounded-3xl border border-gray-800 hover:border-indigo-500/50 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(79,70,229,0.15)] transition-all duration-300 flex flex-col h-full group cursor-pointer relative overflow-hidden"
-            >
-              <div className="p-8 flex flex-col flex-grow">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="p-3 bg-gray-800/80 rounded-2xl text-indigo-400 group-hover:bg-indigo-500/20 group-hover:text-indigo-300 transition-all duration-300 shadow-inner">
-                    {project.icon}
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-gray-800/50 border border-gray-700 flex items-center justify-center text-gray-400 group-hover:text-white group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-all">
-                    <ArrowUpRight size={18} />
-                  </div>
+        {/* Skills Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {skillsCategories.map((cat, idx) => (
+            <Card3DTilt key={cat.title}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-gray-900/30 backdrop-blur-md p-7 rounded-3xl border border-gray-800 hover:border-indigo-500/40 transition-all duration-300 h-full"
+              >
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="p-2.5 bg-indigo-500/10 rounded-xl border border-indigo-500/20">{cat.icon}</div>
+                  <h4 className="font-bold text-gray-100 text-base">{cat.title}</h4>
                 </div>
-
-                <h4 className="text-2xl font-bold text-gray-100 mb-2 group-hover:text-indigo-300 transition-colors">
-                  {project.title}
-                </h4>
-                <p className="text-indigo-400/80 text-xs font-bold uppercase tracking-wider mb-4">
-                  {project.subtitle}
-                </p>
-                <p className="text-gray-400 text-sm mb-8 flex-grow leading-relaxed">
-                  {project.description}
-                </p>
-
-                <div className="pt-5 border-t border-gray-800/60 flex flex-wrap gap-2">
-                  {project.techStack.slice(0, 3).map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[11px] font-medium px-3 py-1.5 bg-gray-800/60 text-gray-300 rounded-lg border border-gray-700/50"
-                    >
-                      {tech}
+                <div className="flex flex-wrap gap-2">
+                  {cat.skills.map((skill) => (
+                    <span key={skill} className="px-3 py-1 bg-gray-800/80 border border-gray-700/60 text-gray-300 rounded-lg text-xs font-medium hover:border-indigo-500/50 hover:text-indigo-300 transition-colors">
+                      {skill}
                     </span>
                   ))}
-                  {project.techStack.length > 3 && (
-                    <span className="text-[11px] font-medium px-3 py-1.5 bg-gray-800/60 text-gray-300 rounded-lg border border-gray-700/50">
-                      +{project.techStack.length - 3}
-                    </span>
-                  )}
+                </div>
+              </motion.div>
+            </Card3DTilt>
+          ))}
+        </div>
+
+        {/* Interactive Tabbed Experience / Education / Milestones */}
+        <div className="bg-gray-900/20 border border-gray-800 rounded-3xl p-6 sm:p-8 backdrop-blur-md">
+          <div className="flex border-b border-gray-800 pb-4 mb-8 gap-4 overflow-x-auto scrollbar-hide">
+            <button
+              onClick={() => setActiveTab("education")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs tracking-wider uppercase transition-all whitespace-nowrap ${
+                activeTab === "education" ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)]" : "bg-gray-800/50 text-gray-400 hover:text-white"
+              }`}
+            >
+              <GraduationCap size={16} /> Education
+            </button>
+            <button
+              onClick={() => setActiveTab("experience")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs tracking-wider uppercase transition-all whitespace-nowrap ${
+                activeTab === "experience" ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)]" : "bg-gray-800/50 text-gray-400 hover:text-white"
+              }`}
+            >
+              <Briefcase size={16} /> Training & Experience
+            </button>
+            <button
+              onClick={() => setActiveTab("milestones")}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs tracking-wider uppercase transition-all whitespace-nowrap ${
+                activeTab === "milestones" ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)]" : "bg-gray-800/50 text-gray-400 hover:text-white"
+              }`}
+            >
+              <Rocket size={16} /> Milestones & Hackathons
+            </button>
+          </div>
+
+          {activeTab === "education" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div className="relative pl-6 border-l-2 border-indigo-500/50 space-y-1">
+                <div className="absolute -left-[7px] top-0 w-3 h-3 bg-indigo-500 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.8)]" />
+                <h5 className="font-bold text-white text-base">B.Tech in Computer Science Engineering</h5>
+                <p className="text-indigo-400 text-sm font-medium">IKGPTU Mohali Campus</p>
+                <div className="text-xs text-gray-400 flex items-center gap-3 pt-1">
+                  <span className="bg-gray-800 px-2.5 py-1 rounded-md">Expected Graduation: 2027</span>
+                  <span className="bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2.5 py-1 rounded-md font-semibold">
+                    Current CGPA: 7.55
+                  </span>
+                </div>
+              </div>
+              <div className="relative pl-6 border-l-2 border-gray-800 space-y-1 pt-2">
+                <div className="absolute -left-[7px] top-2 w-3 h-3 bg-gray-700 rounded-full" />
+                <h5 className="font-bold text-white text-base">Diploma in Computer Engineering</h5>
+                <p className="text-indigo-400 text-sm font-medium">Government Polytechnic Hamirpur</p>
+                <div className="text-xs text-gray-400 flex items-center gap-3 pt-1">
+                  <span className="bg-gray-800 px-2.5 py-1 rounded-md">Completed 2024</span>
+                  <span className="bg-gray-800 px-2.5 py-1 rounded-md">Score: 75%</span>
                 </div>
               </div>
             </motion.div>
-          ))}
+          )}
+
+          {activeTab === "experience" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+              <div className="relative pl-6 border-l-2 border-indigo-500/50 space-y-1">
+                <div className="absolute -left-[7px] top-0 w-3 h-3 bg-indigo-500 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.8)]" />
+                <h5 className="font-bold text-white text-base">Industrial Web Development Training</h5>
+                <p className="text-indigo-400 text-sm font-medium">Ex-Trainer, Mohali</p>
+                <p className="text-xs text-gray-400 pt-1 leading-relaxed">
+                  Hands-on industrial training focused on full-stack web architecture, API integrations, responsive design patterns, and cloud deployment standard procedures.
+                </p>
+              </div>
+              <div className="relative pl-6 border-l-2 border-gray-800 space-y-1 pt-2">
+                <div className="absolute -left-[7px] top-2 w-3 h-3 bg-gray-700 rounded-full" />
+                <h5 className="font-bold text-white text-base">App Development Internship Training</h5>
+                <p className="text-indigo-400 text-sm font-medium">Prerna-Gati Technologies</p>
+                <p className="text-xs text-gray-400 pt-1 leading-relaxed">
+                  6 weeks of hands-on software development training covering modular client interface workflows and API synchronization.
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "milestones" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50">
+                <h5 className="font-bold text-white text-sm">HACK-O-OCTO Competitor</h5>
+                <p className="text-xs text-gray-400 mt-1">Built full-stack software solutions under active competition constraints.</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50">
+                <h5 className="font-bold text-white text-sm">Hack-2-Hatch Participant</h5>
+                <p className="text-xs text-gray-400 mt-1">Designed dynamic pitching platforms and prototype architectures.</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-800/40 border border-gray-700/50">
+                <h5 className="font-bold text-white text-sm">VLSI Design Workshop</h5>
+                <p className="text-xs text-gray-400 mt-1">Attended technical workshops exploring low-level hardware system design concepts.</p>
+              </div>
+            </motion.div>
+          )}
         </div>
       </section>
 
-      {/* --- Interactive Project Modal --- */}
+      {/* --- Portfolio / Projects Section (Restored Full Version) --- */}
+      <section id="portfolio" className="max-w-7xl mx-auto px-6 lg:px-12 py-16 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+          <div>
+            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2 flex items-center gap-3">
+              <Layers className="text-indigo-400" size={28} /> Featured Projects
+            </h3>
+            <p className="text-gray-400 text-sm">Explore AI workflows, web apps, and system database projects.</p>
+          </div>
+
+          {/* Search Box */}
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+            <input
+              type="text"
+              placeholder="Search tech stack or title..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-gray-900/80 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white text-xs">
+                <X size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Category Filters */}
+        <div className="flex flex-wrap gap-2.5 mb-8">
+          {(["All", "AI / RAG", "Full Stack", "Systems / SQL"] as ProjectCategory[]).map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                selectedCategory === cat
+                  ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.3)]"
+                  : "bg-gray-900/60 border border-gray-800 text-gray-400 hover:text-white hover:border-gray-700"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Projects Grid with 3D Tilt */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project, index) => (
+              <Card3DTilt key={project.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  onClick={() => setSelectedProject(project)}
+                  className="bg-gray-900/30 backdrop-blur-md rounded-3xl border border-gray-800 hover:border-indigo-500/50 hover:shadow-[0_10px_30px_rgba(79,70,229,0.15)] transition-all duration-300 flex flex-col h-full group cursor-pointer relative overflow-hidden"
+                >
+                  {project.featured && (
+                    <div className="absolute top-4 right-4 z-10 px-2.5 py-1 bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-[10px] font-bold rounded-full backdrop-blur-md uppercase tracking-wider">
+                      Featured
+                    </div>
+                  )}
+                  <div className="p-8 flex flex-col flex-grow">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="p-3 bg-gray-800/80 rounded-2xl text-indigo-400 group-hover:bg-indigo-500/20 group-hover:text-indigo-300 transition-all duration-300 shadow-inner">
+                        {project.icon}
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-gray-800/50 border border-gray-700 flex items-center justify-center text-gray-400 group-hover:text-white group-hover:bg-indigo-500/20 group-hover:border-indigo-500/50 transition-all">
+                        <ArrowUpRight size={18} />
+                      </div>
+                    </div>
+                    <h4 className="text-2xl font-bold text-gray-100 mb-1 group-hover:text-indigo-300 transition-colors">
+                      {project.title}
+                    </h4>
+                    <p className="text-indigo-400/80 text-xs font-bold uppercase tracking-wider mb-4">
+                      {project.subtitle}
+                    </p>
+                    <p className="text-gray-400 text-sm mb-8 flex-grow leading-relaxed line-clamp-3">
+                      {project.description}
+                    </p>
+                    <div className="pt-5 border-t border-gray-800/60 flex flex-wrap gap-2">
+                      {project.techStack.slice(0, 3).map((tech) => (
+                        <span key={tech} className="text-[11px] font-medium px-3 py-1 bg-gray-800/60 text-gray-300 rounded-lg border border-gray-700/50">
+                          {tech}
+                        </span>
+                      ))}
+                      {project.techStack.length > 3 && (
+                        <span className="text-[11px] font-medium px-2 py-1 bg-indigo-500/10 text-indigo-400 rounded-lg border border-indigo-500/20">
+                          +{project.techStack.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              </Card3DTilt>
+            ))
+          ) : (
+            <div className="col-span-full py-12 text-center text-gray-500">
+              No projects found matching your criteria.
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* --- Project Details Modal --- */}
       <AnimatePresence>
         {selectedProject && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProject(null)}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+          >
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedProject(null)}
-              className="absolute inset-0 bg-[#07090e]/80 backdrop-blur-md"
-            />
-
-            {/* Modal Content */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative bg-[#11141d] border border-gray-700 rounded-3xl max-w-2xl w-full shadow-[0_0_50px_rgba(0,0,0,0.5)] z-10 overflow-hidden flex flex-col max-h-[90vh]"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-gray-900 border border-gray-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto shadow-2xl"
             >
-              {/* Floating Close Button */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-gray-900/60 text-gray-300 hover:text-white hover:bg-gray-800 transition-all backdrop-blur-md border border-gray-600 hover:border-gray-400"
+                className="absolute top-6 right-6 p-2 rounded-xl bg-gray-800 text-gray-400 hover:text-white transition-colors"
               >
                 <X size={20} />
               </button>
 
-              {/* Project Image Banner */}
-              {selectedProject.image && (
-                <div className="w-full h-56 sm:h-72 flex-shrink-0 relative bg-gray-900 border-b border-gray-800">
-                  <img
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Gradient to blend image into background */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#11141d] via-[#11141d]/40 to-transparent opacity-90" />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-3 bg-indigo-500/10 rounded-2xl text-indigo-400 border border-indigo-500/20">
+                  {selectedProject.icon}
                 </div>
-              )}
-
-              {/* Scrollable Text Content Area */}
-              <div className="p-8 sm:p-10 overflow-y-auto">
-                <div className="mb-6 pr-10">
-                  <div className="text-indigo-400 text-sm font-bold uppercase tracking-widest mb-2">
-                    {selectedProject.subtitle}
-                  </div>
-                  <h3 className="text-3xl sm:text-4xl font-extrabold text-gray-100">
-                    {selectedProject.title}
-                  </h3>
+                <div>
+                  <h3 className="text-2xl font-bold text-white">{selectedProject.title}</h3>
+                  <p className="text-xs text-indigo-400 font-bold uppercase">{selectedProject.subtitle}</p>
                 </div>
+              </div>
 
-                <p className="text-gray-300 text-base leading-relaxed mb-8">
-                  {selectedProject.longDescription}
-                </p>
+              <p className="text-gray-300 text-sm leading-relaxed mb-6">{selectedProject.longDescription}</p>
 
-                <div className="mb-8 bg-gray-900/50 p-6 rounded-2xl border border-gray-800">
-                  <h4 className="text-xs text-gray-400 font-bold uppercase tracking-widest mb-4">
-                    Core Architecture
-                  </h4>
-                  <div className="flex flex-wrap gap-2.5">
-                    {selectedProject.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3.5 py-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-300 shadow-[0_0_10px_rgba(79,70,229,0.05)]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {selectedProject.link && (
-                  <div className="pt-2 flex justify-end">
-                    <a
-                      href={selectedProject.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3.5 rounded-xl text-sm transition-all duration-300 flex items-center gap-2 shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:-translate-y-0.5"
+              <div className="mb-6">
+                <h5 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Technologies Used</h5>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProject.techStack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 bg-gray-800 text-indigo-300 border border-gray-700 text-xs rounded-lg font-medium"
                     >
-                      Launch Platform <ExternalLink size={18} />
-                    </a>
-                  </div>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 pt-4 border-t border-gray-800">
+                {selectedProject.link && (
+                  <a href={selectedProject.link} target="_blank" rel="noreferrer" className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors">
+                    Live Demo <ExternalLink size={14} />
+                  </a>
+                )}
+                {selectedProject.github && (
+                  <a href={selectedProject.github} target="_blank" rel="noreferrer" className="border border-gray-700 hover:border-gray-600 text-gray-300 font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors">
+                    GitHub Repo <GitBranch size={14} />
+                  </a>
                 )}
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </main>
