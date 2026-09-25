@@ -136,6 +136,7 @@ const projectsData: Project[] = [
     longDescription: "Venture-Bridge bridges the capital and execution gap. It establishes a secure ecosystem where startup founders pitch concepts, and venture capital stakeholders inspect and engage directly.",
     techStack: ["MongoDB", "Express", "React", "Node.js", "JWT Auth"],
     icon: <Users size={24} />,
+    link: "https://venture-bridge-ruby.vercel.app",
     github: "https://github.com/NikhilMoudgil",
   },
   {
