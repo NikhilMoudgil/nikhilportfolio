@@ -311,7 +311,7 @@ export default function App() {
           <Card3DTilt intensity={12} scaleOnHover={true}>
             <div className="w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-indigo-500/40 shadow-[0_20px_50px_rgba(79,70,229,0.25)] relative group cursor-pointer">
               <img 
-                src="/profile.jpeg" 
+                src="/Nikhil.png" 
                 alt="Nikhil Moudgil" 
                 className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-700"
               />
