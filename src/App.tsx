@@ -22,8 +22,6 @@ import {
   ArrowRight,
   ChevronDown,
   Send,
-  Globe,
-  GitBranch,
   Download,
   Cpu,
   GraduationCap,
