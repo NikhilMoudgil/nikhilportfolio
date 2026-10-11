@@ -11,7 +11,6 @@ import {
   animate,
 } from "framer-motion";
 import {
-  Mail,
   ExternalLink,
   Code2,
   Database,
@@ -39,6 +38,7 @@ import {
   Sparkles,
   Layers,
 } from "lucide-react";
+import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 import HeroDeskScene from "./components/HeroDeskScene";
 
@@ -833,7 +833,7 @@ export default function App() {
               aria-label="GitHub"
               className="cl-btn cl-raised-sm w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-[color:var(--mut)] hover:text-[color:var(--acc)]"
             >
-              <GitBranch size={18} />
+              <FaGithub size={20} />
             </a>
             <a
               href="https://www.linkedin.com/in/nikhil-moudgil-995408270/"
@@ -842,14 +842,14 @@ export default function App() {
               aria-label="LinkedIn"
               className="cl-btn cl-raised-sm w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-[color:var(--mut)] hover:text-[color:var(--acc)]"
             >
-              <Globe size={18} />
+              <FaLinkedin size={20} />
             </a>
             <button
               onClick={handleCopyEmail}
               aria-label="Copy email"
               className="cl-btn cl-raised-sm w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-[color:var(--mut)] hover:text-[color:var(--acc)]"
             >
-              <Mail size={18} />
+              <FaEnvelope size={20} />
             </button>
           </motion.div>
 
@@ -1365,7 +1365,7 @@ export default function App() {
                                   aria-label={`${project.title} on GitHub`}
                                   className="cl-btn cl-raised-sm w-10 h-10 rounded-xl grid place-items-center text-[color:var(--mut)] hover:text-[color:var(--acc)]"
                                 >
-                                  <GitBranch size={16} />
+                                  <FaGithub size={16} />
                                 </a>
                               )}
                             </div>
@@ -1427,7 +1427,7 @@ export default function App() {
                 rel="noreferrer"
                 className="cl-btn cl-raised-sm text-[color:var(--tx2)] hover:text-[color:var(--tx)] px-7 py-3.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2"
               >
-                <Globe size={16} /> LinkedIn
+                <FaLinkedin size={16} /> LinkedIn
               </a>
             </div>
           </div>
@@ -1435,9 +1435,9 @@ export default function App() {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[color:var(--faint)]">
           <p>© {new Date().getFullYear()} Nikhil Moudgil</p>
           <div className="flex items-center gap-5 font-semibold text-[color:var(--mut)]">
-            <a href="https://github.com/NikhilMoudgil" target="_blank" rel="noreferrer" className="hover:text-[color:var(--tx)]">GitHub</a>
-            <a href="https://www.linkedin.com/in/nikhil-moudgil-995408270/" target="_blank" rel="noreferrer" className="hover:text-[color:var(--tx)]">LinkedIn</a>
-            <a href={`mailto:${EMAIL}`} className="hover:text-[color:var(--tx)]">Email</a>
+            <a href="https://github.com/NikhilMoudgil" target="_blank" rel="noreferrer" className="hover:text-[color:var(--tx)] flex items-center gap-1.5"><FaGithub size={14} /> GitHub</a>
+            <a href="https://www.linkedin.com/in/nikhil-moudgil-995408270/" target="_blank" rel="noreferrer" className="hover:text-[color:var(--tx)] flex items-center gap-1.5"><FaLinkedin size={14} /> LinkedIn</a>
+            <a href={`mailto:${EMAIL}`} className="hover:text-[color:var(--tx)] flex items-center gap-1.5"><FaEnvelope size={14} /> Email</a>
             <a href="/nikhilcv.pdf" download="nikhilcv.pdf" className="hover:text-[color:var(--tx)]">CV</a>
           </div>
         </div>
@@ -1535,7 +1535,7 @@ export default function App() {
                     rel="noreferrer"
                     className="cl-btn cl-raised-sm text-[color:var(--tx2)] hover:text-[color:var(--tx)] font-semibold px-6 py-3 rounded-2xl text-sm flex items-center gap-2"
                   >
-                    View on GitHub <GitBranch size={15} />
+                    View on GitHub <FaGithub size={15} />
                   </a>
                 )}
               </div>
