@@ -255,6 +255,7 @@ const projectsData: Project[] = [
     ],
     techStack: ["Next.js", "Python", "FastAPI", "OpenAI API", "Tailwind CSS"],
     icon: <Cpu size={24} />,
+    link: "https://repomind-nikhilmoudgil.streamlit.app/",
     github: "https://github.com/NikhilMoudgil",
   },
   {
